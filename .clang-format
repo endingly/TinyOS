@@ -1,5 +1,5 @@
 Language: Cpp
-BasedOnStyle: Microsoft
+BasedOnStyle: Google
 
 # 连续赋值时，对齐所有等号
 AlignConsecutiveAssignments:	true

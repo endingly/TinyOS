@@ -1,0 +1,46 @@
+{
+    "version": 6,
+    "configurePresets": [
+        {
+            "name": "Windows_ELF_GCC_13_Debug",
+            "displayName": "Windows_ELF_GCC_13_Debug",
+            "description": "Sets Ninja generator, build and install directory",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "environment": {
+                "COMPILER_PATH": "G:/soft/msys64/home/CBLI/opt/cross/bin",
+                "XORRISO_EXE": "G:/soft/msys64/usr/bin/xorriso",
+                "QEUM_EXE": "G:/soft/msys64/ucrt64/bin/qemu-system-i386",
+                "GRUB_MKIMAGE_EXE": "G:/soft/grub-2.06-for-windows/grub-mkimage"
+            },
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_CXX_COMPILER": "${env:COMPILER_PATH}/i686-elf-g++.exe",
+                "CMAKE_C_COMPILER": "${env:COMPILER_PATH}/i686-elf-gcc.exe",
+                "OBJDUMPER": "${env:COMPILER_PATH}/i686-elf-objdump",
+                "CMAKE_C_COMPILER_FORCED": "TRUE",
+                "CMAKE_CXX_COMPILER_FORCED": "TRUE",
+                "TINYOS_ARCH": "i386"
+            }
+        },
+        {
+            "name": "Windows_ELF_GCC_13_Release",
+            "displayName": "Windows_ELF_GCC_13_Release",
+            "description": "Sets Ninja generator, build and install directory",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "environment": {
+                "COMPILER_PATH": "G:/soft/msys64/home/CBLI/opt/cross/bin"
+            },
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_CXX_COMPILER": "${env:COMPILER_PATH}/i686-elf-g++.exe",
+                "CMAKE_C_COMPILER": "${env:COMPILER_PATH}/i686-elf-gcc.exe",
+                "CMAKE_C_COMPILER_FORCED": "TRUE",
+                "CMAKE_CXX_COMPILER_FORCED": "TRUE"
+            }
+        }
+    ]
+}

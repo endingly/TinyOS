@@ -1,0 +1,2 @@
+file(GLOB_RECURSE HAL_SOURCES_FILES *.c)
+add_library(hal ${HAL_SOURCES_FILES})
