@@ -14,7 +14,7 @@
     stack_top:
 
 .section .text
-    .global _start
+    .global start_
     start_:
         mov $stack_top, %esp
         /* [ ] kernel init
