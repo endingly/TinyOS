@@ -17,10 +17,10 @@ set_target_properties(
 )
 #=====================================================================
 #================= find some tools ===================================
-message(STATUS "[OPTIONAL] xorriso path: $ENV{XORRISO_EXE}")
+message(STATUS "[REQUIRED] xorriso path: $ENV{XORRISO_EXE}")
 message(STATUS "[REQUIRED] QEUM path: $ENV{QEUM_EXE}")
 message(STATUS "[REQUIRED] objdump path: ${OBJDUMPER}")
-message(STATUS "[OPTIONAL] grub-mkimage path: $ENV{GRUB_MKIMAGE_EXE}")
+message(STATUS "[REQUIRED] grub-mkrescue path: $ENV{GRUB_MKRESCUE_EXE}")
 #=====================================================================
 
 if(EXISTS ${CMAKE_BINARY_DIR}/kernel/kernel.iso)
@@ -30,8 +30,8 @@ endif()
 add_custom_target(
     BUILD_KERNEL_ISO ALL
     COMMAND ${OBJDUMPER} -D kernel.bin > dump
-    COMMAND $ENV{GRUB_MKIMAGE_EXE} -O i386-efi -o kernel.iso -p ./
-    COMMAND $ENV{XORRISO_EXE} -as mkisofs -o kernel.iso -b kernel.iso -no-emul-boot -boot-load-size 4 -boot-info-table ./ 
+    COMMAND cp  ${PROJECT_SOURCE_DIR}/scripts/grub.cfg ./grub.cfg
+    COMMAND $ENV{GRUB_MKRESCUE_EXE} -o kernel.iso ./
     DEPENDS kernel
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/kernel
     COMMENT "Convert the ELF output file to a iso"

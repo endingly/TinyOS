@@ -33,6 +33,39 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
+        },
+        {
+            "name": "Ubuntu_ELF_GCC_13_Debug",
+            "displayName": "Ubuntu_ELF_GCC_13_Debug",
+            "description": "Sets Ninja generator, build and install directory",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_CXX_COMPILER": "${env:COMPILER_PATH}/i686-elf-g++",
+                "CMAKE_C_COMPILER": "${env:COMPILER_PATH}/i686-elf-gcc",
+                "OBJDUMPER": "${env:COMPILER_PATH}/i686-elf-objdump",
+                "CMAKE_C_COMPILER_FORCED": "TRUE",
+                "CMAKE_CXX_COMPILER_FORCED": "TRUE",
+                "TINYOS_ARCH": "i386"
+            },
+            "environment": {
+                "MSYS2_ROOT": "E:/code_tools/msys64",
+                "COMPILER_PATH": "/root/code_tools/i686-elf-gcc/bin",
+                "XORRISO_EXE": "xorriso",
+                "QEUM_EXE": "qemu-system-i386",
+                "GRUB_MKIMAGE_EXE": "",
+                "GRUB_MKRESCUE_EXE" : "grub-mkrescue"
+            }
+        },
+        {
+            "name": "Ubuntu_ELF_GCC_13_Release",
+            "displayName": "Ubuntu_ELF_GCC_13_Release",
+            "description": "Sets Ninja generator, build and install directory",
+            "inherits": "Windows_ELF_GCC_13_Debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
         }
     ]
 }
