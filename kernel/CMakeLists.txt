@@ -30,12 +30,12 @@ endif()
 add_custom_target(
     BUILD_KERNEL_ISO ALL
     COMMAND ${OBJDUMPER} -D kernel.bin > dump
-    #COMMAND $ENV{XORRISO_EXE} -as mkisofs -o kernel.iso -b kernel.bin -no-emul-boot -boot-load-size 4 -boot-info-table ./
-    COMMAND $ENV{GRUB_MKIMAGE_EXE} -O i386-efi -o kernel.iso -p ./
+    COMMAND $ENV{GRUB_MKIMAGE_EXE} -O i386-pc -o kernel.iso -p ./
+    COMMAND $ENV{XORRISO_EXE} -as mkisofs -o kernel.iso -b kernel.iso -no-emul-boot -boot-load-size 4 -boot-info-table ./ 
     DEPENDS kernel
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/kernel
     COMMENT "Convert the ELF output file to a iso"
-    BYPRODUCTS kernel.iso
+    BYPRODUCTS kernel.iso dump
     VERBATIM
 )
 
