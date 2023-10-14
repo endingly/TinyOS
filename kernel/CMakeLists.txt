@@ -1,6 +1,5 @@
 file(GLOB_RECURSE KERNEL_SOURCES */*.c *.c)
 file(GLOB_RECURSE LD_SCRIPT_FILE ${PROJECT_SOURCE_DIR}/scripts/TinyOS-${CMAKE_BUILD_TYPE}.ld)
-message(STATUS "LD_SCRIPT_FILE: ${LD_SCRIPT_FILE}")
 add_executable(kernel ${KERNEL_SOURCES})
 target_compile_options(
     kernel PUBLIC
@@ -17,31 +16,32 @@ set_target_properties(
 )
 #=====================================================================
 #================= find some tools ===================================
-message(STATUS "[REQUIRED] xorriso path: $ENV{XORRISO_EXE}")
 message(STATUS "[REQUIRED] QEUM path: $ENV{QEUM_EXE}")
 message(STATUS "[REQUIRED] objdump path: ${OBJDUMPER}")
 message(STATUS "[REQUIRED] grub-mkrescue path: $ENV{GRUB_MKRESCUE_EXE}")
 #=====================================================================
 
-if(EXISTS ${CMAKE_BINARY_DIR}/kernel/kernel.iso)
-    message(STATUS "Remove old kernel.iso")
-    file(REMOVE ${CMAKE_BINARY_DIR}/kernel/kernel.iso)
-endif()
+execute_process(
+    COMMAND mkdir -p boot/iso/grub
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/kernel
+)
+
 add_custom_target(
     BUILD_KERNEL_ISO ALL
+    COMMAND cp kernel.bin boot/kernel.bin
     COMMAND ${OBJDUMPER} -D kernel.bin > dump
-    COMMAND cp  ${PROJECT_SOURCE_DIR}/scripts/grub.cfg ./grub.cfg
-    COMMAND $ENV{GRUB_MKRESCUE_EXE} -o kernel.iso ./
+    COMMAND cp ${PROJECT_SOURCE_DIR}/scripts/grub.cfg boot/iso/grub/grub.cfg
+    COMMAND $ENV{GRUB_MKRESCUE_EXE} -o boot/iso/kernel.iso
     DEPENDS kernel
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/kernel
     COMMENT "Convert the ELF output file to a iso"
-    BYPRODUCTS kernel.iso dump
+    BYPRODUCTS boot/iso/kernel.iso dump boot/iso/grub/grub.cfg boot/kernel.bin
     VERBATIM
 )
 
 add_custom_target(
     RUN_KERNEL_IN_QEMU
-    COMMAND $ENV{QEUM_EXE} -cdrom kernel.iso
+    COMMAND $ENV{QEUM_EXE} -cdrom boot/iso/kernel.iso
     DEPENDS BUILD_KERNEL_ISO
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/kernel
     COMMENT "Run the kernel in qemu"
