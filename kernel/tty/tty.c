@@ -12,15 +12,26 @@ uint32_t        TTY_ROW     = 0;
 void tty_set_color(vga_atrributes fg, vga_atrributes bg) { theme_color = (fg << 4 | bg) << 8; }
 
 void tty_push_char(char c) {
-  *(buffer + TTY_COLUMN + TTY_ROW * TINYOS_TTY_WIDTH) = (theme_color | c);
-  TTY_COLUMN++;
-  if (TTY_COLUMN >= TINYOS_TTY_WIDTH) {
+  if (c == '\n') {
     TTY_COLUMN = 0;
     TTY_ROW++;
     if (TTY_ROW >= TINYOS_TTY_HEIGHT) {
       tty_scroll_up();
       TTY_ROW--;
     }
+  } else if (c == '\r') {
+    TTY_COLUMN = 0;
+  } else {
+    *(buffer + TTY_COLUMN + TTY_ROW * TINYOS_TTY_WIDTH) = (theme_color | c);
+    TTY_COLUMN++;
+    if (TTY_COLUMN >= TINYOS_TTY_WIDTH) {
+      TTY_COLUMN = 0;
+      TTY_ROW++;
+    }
+  }
+  if (TTY_ROW >= TINYOS_TTY_HEIGHT) {
+    tty_scroll_up();
+    TTY_ROW--;
   }
 }
 
