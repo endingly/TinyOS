@@ -17,9 +17,6 @@ set_target_properties(
 #=====================================================================
 #================= find some tools ===================================
 message(STATUS "[REQUIRED] QEUM path: $ENV{QEUM_EXE}")
-message(STATUS "[REQUIRED] objdump path: ${OBJDUMPER}")
-message(STATUS "xorriso path: $ENV{XORRISO_EXE}")
-message(STATUS "grub-mkimage path: $ENV{GRUB_MKIMAGE_EXE}")
 message(STATUS "grub-mkrescue path: $ENV{GRUB_MKRESCUE_EXE}")
 #=====================================================================
 add_custom_target(
@@ -27,9 +24,6 @@ add_custom_target(
     COMMAND ${OBJDUMPER} -D kernel.bin > dump
     COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/scripts/grub.cfg iso/boot/grub/grub.cfg
     COMMAND ${CMAKE_COMMAND} -E copy kernel.bin iso/boot/kernel.bin
-    
-    #COMMAND $ENV{GRUB_MKIMAGE_EXE} -o iso/boot/core.img -O i386-pc -p iso/boot -c iso/boot/grub/grub.cfg multiboot #iso9660 # # 创建了一个空的iso文件
-    #COMMAND $ENV{XORRISO_EXE} -as mkisofs -R -J -o kernel.iso iso -b /boot/kernel.bin -no-emul-boot #  -boot-load-size 4 -boot-info-table #    
     COMMAND $ENV{GRUB_MKRESCUE_EXE} -o kernel.iso iso
     DEPENDS kernel
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/kernel
