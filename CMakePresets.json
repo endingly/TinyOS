@@ -8,8 +8,8 @@
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/out/build/${presetName}",
             "environment": {
-                "MSYS2_ROOT": "E:/code_tools/msys64",
-                "COMPILER_PATH": "${env:MSYS2_ROOT}/cross/x86_64-elf-tools-windows/bin",
+                "MSYS2_ROOT": "C:/backup/msys64",
+                "COMPILER_PATH": "${env:MSYS2_ROOT}/cross/i686-elf-tools-windows/bin",
                 "XORRISO_EXE": "${env:MSYS2_ROOT}/usr/bin/xorriso",
                 "QEUM_EXE": "${env:MSYS2_ROOT}/ucrt64/bin/qemu-system-i386",
                 "GRUB_MKIMAGE_EXE": "${env:MSYS2_ROOT}/cross/grub-2.06-for-windows/grub-mkimage"
@@ -17,9 +17,9 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
-                "CMAKE_CXX_COMPILER": "${env:COMPILER_PATH}/x86_64-elf-g++.exe",
-                "CMAKE_C_COMPILER": "${env:COMPILER_PATH}/x86_64-elf-gcc.exe",
-                "OBJDUMPER": "${env:COMPILER_PATH}/x86_64-elf-objdump",
+                "CMAKE_CXX_COMPILER": "${env:COMPILER_PATH}/i686-elf-g++.exe",
+                "CMAKE_C_COMPILER": "${env:COMPILER_PATH}/i686-elf-gcc.exe",
+                "OBJDUMPER": "${env:COMPILER_PATH}/i686-elf-objdump.exe",
                 "CMAKE_C_COMPILER_FORCED": "TRUE",
                 "CMAKE_CXX_COMPILER_FORCED": "TRUE",
                 "TINYOS_ARCH": "i386"
@@ -50,7 +50,6 @@
                 "TINYOS_ARCH": "i386"
             },
             "environment": {
-                "MSYS2_ROOT": "E:/code_tools/msys64",
                 "COMPILER_PATH": "/root/code_tools/i686-elf-gcc/bin",
                 "XORRISO_EXE": "xorriso",
                 "QEUM_EXE": "qemu-system-i386",
