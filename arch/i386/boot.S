@@ -1,4 +1,4 @@
-#include "multiboot.h"
+#include <TinyOS/arch/i386/multiboot.h>
 .code32
 
 .section .multiboot
@@ -15,16 +15,34 @@
 
 .section .text
     .global start_
+    .type start_, @function
     start_:
-        mov $stack_top, %esp
+        movl $stack_top, %esp
         /* [ ] kernel init
-               1. load GDT
+               [x]. load GDT
                2. load IDT
                3. enable paging
         */
         call _kernel_init
+        subl $0x6, %esp
+        movl $_gdt, 2(%esp)
+        movw _gdt_limit, %ax
+        movw %ax, (%esp)
+        lgdt (%esp)
+        addl $0x6, %esp
 
-        push %ebx
+        movw $0x10, %cx
+        movw %cx, %es
+        movw %cx, %ds
+        movw %cx, %fs
+        movw %cx, %gs
+        movw %cx, %ss
+        
+        pushw $0x08
+        pushl $_after_gdt
+        retf
+    _after_gdt:
+        pushl %ebx
         call _kernel_main
 
         cli
