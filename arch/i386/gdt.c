@@ -4,7 +4,7 @@
 #define GDT_ENTRY_COUNT 5
 
 uint64_t _gdt[GDT_ENTRY_COUNT];
-uint16_t _gdt_limit = sizeof(_gdt);
+uint16_t _gdt_limit = sizeof(_gdt) - 1;
 
 void _set_gdt_entry(uint32_t index, uint32_t base, uint32_t limit, uint32_t flag) {
   _gdt[index] = SD_BASE_HIGH(base) | flag | SD_LIM_HIGH(limit) | SD_BASE_MID(base);
