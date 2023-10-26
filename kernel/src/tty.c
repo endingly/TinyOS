@@ -1,4 +1,4 @@
-#include <TinyOS/tty/tty.h>
+#include <kernel/tty/tty.h>
 #include <stdint-gcc.h>
 
 #define TINYOS_TTY_WIDTH 80

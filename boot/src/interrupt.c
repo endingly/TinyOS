@@ -1,5 +1,6 @@
-#include <TinyOS/arch/i386/interrupt.h>
-#include <TinyOS/tty/tty.h>
+#include <boot/interrupt.h>
+#include <kernel/tty/tty.h>
+
 
 void isr0(interrupt_parma* parma) {
   tty_clear();

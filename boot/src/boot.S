@@ -1,4 +1,4 @@
-#include <TinyOS/arch/i386/multiboot.h>
+#include <boot/multiboot.h>
 .code32
 
 .section .multiboot

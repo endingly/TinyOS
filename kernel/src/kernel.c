@@ -1,6 +1,6 @@
-#include <TinyOS/arch/i386/gdt.h>
-#include <TinyOS/arch/i386/idt.h>
-#include <TinyOS/tty/tty.h>
+#include <boot/gdt.h>
+#include <boot/idt.h>
+#include <kernel/tty/tty.h>
  
 void _kernel_init() {
   _init_gdt();

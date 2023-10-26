@@ -1,4 +1,4 @@
-#include <TinyOS/arch/i386/gdt.h>
+#include <boot/gdt.h>
 #include <stdint-gcc.h>
 
 #define GDT_ENTRY_COUNT 5

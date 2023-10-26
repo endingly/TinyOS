@@ -1,5 +1,5 @@
-#include <TinyOS/arch/i386/idt.h>
-#include <TinyOS/arch/i386/interrupt.h>
+#include <boot/idt.h>
+#include <boot/interrupt.h>
 #include <stdint-gcc.h>
 
 #define IDT_ENTRY_COUNT 5
