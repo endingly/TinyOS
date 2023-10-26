@@ -1,3 +1,4 @@
+// 利用汇编包装函数，等待链接器调用即可
 .macro isr_template vector,no_error_code=1
     .global _asm_isr\vector
     .type _asm_isr\vector, @function
@@ -14,8 +15,11 @@
     interrupt_wrapper:
         mov %esp, %eax
         and $0xfffffff0, %esp
-        push %eax
+        sub $16, %esp
+        mov %eax, (%esp)
 
-        call interrupt_handler
+        call interrupt_handle
+        pop %eax
+        mov %eax, %esp
         add $0x4, %esp
         iret

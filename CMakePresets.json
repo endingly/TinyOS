@@ -53,8 +53,7 @@
                 "CMAKE_C_COMPILER": "${env:COMPILER_PATH}/i686-elf-gcc",
                 "OBJDUMPER": "${env:COMPILER_PATH}/i686-elf-objdump",
                 "CMAKE_C_COMPILER_FORCED": "TRUE",
-                "CMAKE_CXX_COMPILER_FORCED": "TRUE",
-                "TINYOS_ARCH": "i386"
+                "CMAKE_CXX_COMPILER_FORCED": "TRUE"
             }
         },
         {

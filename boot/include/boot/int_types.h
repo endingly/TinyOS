@@ -25,14 +25,3 @@
 #define FAULT_CONTROL_PROTECTION   0x15
 
 // 系统预留的 32 个位置中，只用了前 21 个，剩下的用户可自定义
-#pragma pack(1)
-typedef struct _interrupt_parma {
-  unsigned int   vector;
-  unsigned int   error_code;
-  unsigned int   eip;
-  unsigned short cs;
-  unsigned int   eflags;
-} interrupt_parma;
-#pragma pack()
-
-void interrupt_handle(interrupt_parma *parma);

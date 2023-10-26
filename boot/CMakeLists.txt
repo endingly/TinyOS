@@ -12,4 +12,9 @@ target_include_directories(
     PRIVATE ${CMAKE_SOURCE_DIR}/kernel/include
 )
 add_library(${PROJECT_NAME}::boot ALIAS boot)
-target_compile_options(boot PUBLIC -c)
+target_compile_options(
+    boot PUBLIC
+    -c
+    -Wno-shift-count-overflow
+    -Wno-int-conversion
+)
