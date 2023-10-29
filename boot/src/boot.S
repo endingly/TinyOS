@@ -1,59 +1,59 @@
 #include <boot/multiboot.h>
 .code32
 
+#define MB_FLAG TINYOS_MULTIBOOT_FLAG_4KB_ALIGNED_MEM_MAP | TINYOS_MULTIBOOT_PAGE_ALIGN
+#define KPG_SIZE 24*1024
+
+
 .section .multiboot
     .long TINYOS_MULTIBOOT_MAGIC
-    .long TINYOS_MULTIBOOT_FLAG_4KB_ALIGNED_MEM_MAP
-    .long TINYOS_CHECKSUM(TINYOS_MULTIBOOT_FLAG_4KB_ALIGNED_MEM_MAP)
+    .long MB_FLAG
+    .long TINYOS_CHECKSUM(MB_FLAG)
 
 .section .bss
+    .global mb_info
     /* According to system V abi */
     .align 16
+    /* 为 multiboot mem struct info 预留空间 */
+    mb_info:
+        .skip 4096
     stack_bottom:
         .skip 16318, 0  /* 16 KB */
     stack_top:
 
-.section .text
+.section .kpg
+    .global _k_ptd
+    _k_ptd:
+        .skip KPG_SIZE, 0
+
+.section .hhk_init
     .global start_
     .type start_, @function
     start_:
-        movl $stack_top, %esp
-        /* [ ] kernel init
-               [x]. load GDT
-               2. load IDT
-               3. enable paging
-        */
-        call _kernel_init
-        subl $0x6, %esp
+        mov $stack_top, %esp
+        sub $16, %esp
 
-        movl $_gdt, 2(%esp)
-        movw _gdt_limit, %ax
-        movw %ax, (%esp)
-        lgdt (%esp)
+        mov $mb_info, 4(%esp)
+        mov %ebx, %esp
+        call _save_multiboot_info
 
-        movl $_idt, 2(%esp)
-        movw _idt_limit, %ax
-        movw %ax, (%esp)
-        lidt (%esp)
+        mov $(KPG_SIZE), 4(%esp)
+        mov $(_k_ptd - 0xC0000000), %esp
+        call hhk_init
 
-        addl $0x6, %esp
+        /* 加载 PTD 基地址 */
+        mov %esp, %eax
+        and $0xFFFFF000, %eax
+        mov %eax, %cr3
 
-        movw $0x10, %cx
-        movw %cx, %es
-        movw %cx, %ds
-        movw %cx, %fs
-        movw %cx, %gs
-        movw %cx, %ss
-        
-        pushw $0x08
-        pushl $_after_gdt
-        retf
-    _after_gdt:
-        pushl %ebx
-        call _kernel_main
+        /* 开启分页与地址转换 CR0.PG=1 */
+        mov %cr0, %eax
+        or $0x80000000, %eax
+        mov %eax, %cr0
 
-        cli
-    j_:
-        hlt
-        jmp j_
+        add $16, %esp
+
+        /* 进入内核 */
+        push $hhk_entry_
+        ret
         
